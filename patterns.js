@@ -1,3 +1,32 @@
+// http://www.impressivewebs.com/my-current-javascript-design-pattern/#comment-32835 
+// http://css-tricks.com/how-do-you-structure-javascript-the-module-pattern-edition/#comment-259905
+
+(function ($, MyObject, undefined) {
+  MyObject.publicFunction = function() {
+      console.log("This is a public function!");
+  };
+  var privateFunction = function() {
+    console.log("This is a private function!");
+  };
+  
+  MyObject.sayStuff = function() {
+    this.publicFunction();
+    privateFunction();
+    privateNumber++;
+    console.log(privateNumber);
+  };
+  var privateNumber = 0;
+}(jQuery, window.MyObject = window.MyObject || {}));
+
+MyObject.sayStuff();
+MyObject.sayStuff();
+MyObject.publicFunction();
+MyObject.privateFunction(); // Returns error
+privateFunction(); // Returns error
+
+
+
+
 // The module pattern with methods available as feedback3.methodTest();
 // http://addyosmani.com/resources/essentialjsdesignpatterns/book/
 // http://www.adequatelygood.com/JavaScript-Module-Pattern-In-Depth.html
@@ -77,5 +106,59 @@ NewsWidget = {
 (function() {
   NewsWidget.init();
 })();
+
+
+
+
+
+/**
+ * @name someFunction
+ * @author 
+ *
+ * Basic usage:
+ * someFunction.init();
+ *
+ * additionally you can use methods like someFunction.methodName();
+ */
+var someFunction = new(function () {
+    //assign _root and config private variables
+    var _root = this;
+    var _cfg = {
+        "someOption": "some value"
+    }
+
+    /*
+        INITIALIZE
+    */
+    this.init = function () {
+        //some code
+        _somePrivateMethod();
+        _root.somePublicMethod();
+    }
+    /*
+        Some Private Method (no "this")
+    */
+    var _somePrivateMethod = function () {
+        //some code
+        console.log("_somePrivateMethod");
+    }
+    /*
+        Some Public Method
+    */
+    this.somePublicMethod = function () {
+        //some code
+        console.log("somePublicMethod");
+    }
+
+})();
+
+//declaration and initialization of someFunction
+someFunction.init();
+
+//someFunction._somePrivateMethod();
+//returns: TypeError: someFunction._somePrivateMethod is not a function
+
+//someFunction.somePublicMethod();
+//returns: "somePublicMethod"
 
 
